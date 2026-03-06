@@ -17,7 +17,7 @@ export default function SellersPage() {
 			<SellersHero />
 			<SellerProcess />
 			<HomeValuation />
-			<ContactNew />
+			<ContactNew sectionId="valuation" trackGoogleAdsConversion />
 			<FooterNew />
 		</>
 	);

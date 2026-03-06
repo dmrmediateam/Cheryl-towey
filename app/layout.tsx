@@ -75,6 +75,20 @@ export default function RootLayout({
 					defer
 					src="https://cloud.umami.is/script.js"
 					data-website-id="61487ad5-548b-43c3-bd99-135ecfa4f9c1"></script>
+				{/* Google tag (gtag.js) */}
+				<script
+					async
+					src="https://www.googletagmanager.com/gtag/js?id=AW-411349529"></script>
+				<script
+					dangerouslySetInnerHTML={{
+						__html: `
+							window.dataLayer = window.dataLayer || [];
+							function gtag(){dataLayer.push(arguments);}
+							gtag('js', new Date());
+							gtag('config', 'AW-411349529');
+						`
+					}}
+				/>
 			</head>
 			<body className="antialiased bg-[#121212] min-h-screen">
 				{children}

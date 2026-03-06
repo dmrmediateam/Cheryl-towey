@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
+import { usePathname } from "next/navigation";
 import { SectionTitle } from "../ui/SectionTitle";
 
 interface FormData {
@@ -10,6 +11,11 @@ interface FormData {
 	email: string;
 	phone: string;
 	message: string;
+}
+
+interface ContactNewProps {
+	sectionId?: string;
+	trackGoogleAdsConversion?: boolean;
 }
 
 const textVariants = {
@@ -38,10 +44,14 @@ const formElementVariants = {
 	})
 };
 
-export function ContactNew() {
+export function ContactNew({
+	sectionId = "contact",
+	trackGoogleAdsConversion = false
+}: ContactNewProps) {
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [isSuccess, setIsSuccess] = useState(false);
 	const [isError, setIsError] = useState(false);
+	const pathname = usePathname();
 
 	const {
 		register,
@@ -63,6 +73,24 @@ export function ContactNew() {
 			reset();
 			setIsSuccess(true);
 
+			if (trackGoogleAdsConversion && pathname.startsWith("/sellers")) {
+				const gtag = (
+					window as Window & {
+						gtag?: (
+							command: string,
+							eventName: string,
+							params?: Record<string, string>
+						) => void;
+					}
+				).gtag;
+
+				if (typeof gtag === "function") {
+					gtag("event", "conversion", {
+						send_to: "AW-411349529"
+					});
+				}
+			}
+
 			// Reset success message after 5 seconds
 			setTimeout(() => {
 				setIsSuccess(false);
@@ -76,7 +104,7 @@ export function ContactNew() {
 	};
 
 	return (
-		<section id="contact" className="bg-white py-24 md:py-32">
+		<section id={sectionId} className="bg-white py-24 md:py-32">
 			<div className="mx-[5%] md:mx-[10%] lg:mx-[15%]">
 				<motion.div
 					initial="hidden"
